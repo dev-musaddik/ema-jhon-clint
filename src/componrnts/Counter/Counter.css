@@ -1,0 +1,20 @@
+.cart-item>.header>.details>.section>.addAndDelete{
+    width: 100%;
+    /* background-color: aqua; */
+    display: flex;
+    justify-content: center;
+}
+.cart-item>.header>.details>.section>.addAndDelete>*{
+    background-color: rgb(229, 229, 229);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-weight: bold;
+    /* margin: 0 auto; */
+}
+.cart-item>.header>.details>.section>.addAndDelete>:nth-child(2){
+    background-color:rgb(255, 255, 255);
+}
