@@ -1,0 +1,127 @@
+.ProductDetails{
+    display: flex;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.ProductDetails>:nth-child(1){
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+.ProductDetails>:nth-child(2){
+    margin-top: 150px;
+}
+.product-overView{
+    padding: 0 10px;
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+.product-overView>.img-section{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 25%;
+}
+.product-overView>.img-section>img{
+    width: 100%;
+}
+.product-overView>.bottom-section{
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+}
+.product-overView>.img-section>span{
+    position: absolute;
+    left: 0;
+    background: red;
+    padding: 10px ;
+    color: white;
+    border-radius: 0 0 20px;
+
+}
+
+.bottom-section{
+    background-color: aliceblue;
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bottom-section>.icon{
+    flex: 1;
+    display: flex;
+    color: orangered;
+    justify-content: center;
+    gap: 40px;
+}
+.bottom-section>.button{
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+ .bottom-section>.button>button {
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    border: none; /* Remove the default button border */
+    padding: 10px 20px; /* Add padding to create space for the triangle */
+    border-radius: 5px; /* Rounded corners */
+    /* clip-path: polygon(10% 0%, 100% 100%, 0% 100%); Create a "internal" or "domestic" shape */
+  
+  }
+  .crazy{
+    width: 90vw;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  #stock,#Price{
+    /* background-color: #4CAF50; */
+    color: rgb(200, 80, 0);
+    padding:0px 5px 5px 0px;
+    font-size: 19px;
+    font-weight: bold;
+  }
+  .alert-message{
+    position: absolute;
+    color: #16d81d;
+    font-size: 18px;
+    font-weight: bold;
+    top: 0;
+    z-index: 1000;
+    background-color: red;
+
+
+}
+
+    /* Mobile devices */
+@media (max-width: 768px) {
+    .product-overView>.img-section{
+        width: 100%;
+        overflow: hidden;
+        
+    }
+    .product-overView>.img-section>img{
+        width: 80%;
+    }
+    
+    
+  }
+  
+  /* Tablet devices */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    /* CSS styles for tablet devices */
+    .product-overView>.img-section{
+        width: 50%;
+    }
+   
+  }
+  

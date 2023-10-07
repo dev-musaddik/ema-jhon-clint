@@ -1,0 +1,37 @@
+
+.Card {
+  /* width: calc(100vw / 3); */
+  padding: 5px;
+  transition: .3s;
+  width: 100%;
+  background-color: white;
+  /* margin-bottom: 10px; */
+}
+.Card:hover {
+  box-shadow:0 0 5px black ;
+}
+.Card>.img-section{
+  display: flex;
+  justify-content: center;
+}
+
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    /* CSS styles for mobile devices */
+    .Card{
+      font-size: 14px;
+
+    }
+    .Card>.img-section>img{
+        width: 150px;
+    }
+      
+  }
+  
+  /* Tablet devices */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    /* CSS styles for tablet devices */
+   
+  }
+  
