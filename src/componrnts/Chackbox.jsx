@@ -4,8 +4,9 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
-   
     setIsChecked(!isChecked) 
+   
+   
     
   };
   console.log("iam cartitems", cartItems);
@@ -16,6 +17,7 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
       // Checkbox is checked, add the item to checkOut
 
       const checkedItem = cartItems.find((res) => res.key === itemkey);
+      console.log('ckeck this one',cartItems)
       if (checkedItem) {
         setCheckOut([...checkOut, checkedItem]);
       }
@@ -27,10 +29,9 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
       console.log("Checkbox Unclicked for item with key:", itemkey);
     }
   }, [cartItems, isChecked]);
+ 
 
-  console.log(checkOut);
-  console.log(cartItems);
-  console.log(itemkey);
+ 
 
   return (
     <div>

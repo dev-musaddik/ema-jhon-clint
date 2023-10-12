@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Counter.css"
-function Counter({itemkey,cartItems,setCartItems,checkOut}) {
+function Counter({itemkey,cartItems,setCartItems,checkOut,setCheckOut}) {
 const [numberOfsingleItem, setNumberOfSingleItem] = useState(1);
 const [ProductsPrice, setProductsPrice] = useState({
   subtotal: 0,
@@ -13,22 +13,29 @@ const [ProductsPrice, setProductsPrice] = useState({
 const IncreaseAndDecrease = (type) => {
   
     if (type === "increase" && numberOfsingleItem < 10) {
-     
       
-      const updatedCart = cartItems.map((item) => {
+      // const test=cartItems.map((item) => {
+      //   if (item.key === itemkey) {
+      //     return  { ...item, cartNumber: numberOfsingleItem + 1 };
+      //   }
+      // });
+      // setCartItems(test);
+
+      
+      const updatedCart = checkOut.map((item) => {
         if (item.key === itemkey) {
        
           
-          return { ...item, cartNumber: numberOfsingleItem + 1 ,};
+          return  { ...item, cartNumber: numberOfsingleItem + 1 };
          
         }
         return item;
       });
   
       setNumberOfSingleItem(numberOfsingleItem + 1);
-      setCartItems(updatedCart);
+      setCheckOut(updatedCart);
     } else if (type === "decrease" && numberOfsingleItem > 1) {
-      const updatedCart = cartItems.map((item) => {
+      const updatedCart = checkOut.map((item) => {
         if (item.key === itemkey) {
           return { ...item, cartNumber: numberOfsingleItem - 1 };
         }
@@ -36,7 +43,8 @@ const IncreaseAndDecrease = (type) => {
       });
   
       setNumberOfSingleItem(numberOfsingleItem - 1);
-      setCartItems(updatedCart);
+      setCheckOut(updatedCart);
+      // setCartItems(updatedCart);
       console.log(cartItems)
     }
   };

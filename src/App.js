@@ -8,6 +8,7 @@ import ProductDetails from "./componrnts/ProductDetails/ProductDetails";
 import CartItems from "./componrnts/CartItems/CartItems";
 import { useDispatch, useSelector } from "react-redux";
 import { decrementFn, incrementFn } from "./Action";
+import MyState from "./ContexApi/myState";
 // import { initializeApp } from "firebase/app";
 // import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
 // // TODO: Replace the following with your app's Firebase project configuration
@@ -101,13 +102,14 @@ const number=useSelector((state)=>state.numberIncAndDec)
       {/* <button className="btn-primary" onClick={() => Auth()}>
         SignIn
       </button> */}
-      <h1>{number}</h1>
+      {/* <h1>{number}</h1>
       <button onClick={()=>dispatch(decrementFn())}>-</button>
-      <button onClick={()=>dispatch(incrementFn())}>+</button>
+      <button onClick={()=>dispatch(incrementFn())}>+</button> */}
 
 
+     <MyState>
 
-      <Router>
+     <Router>
         <Routes>
           {/* Define your routes here */}
           <Route
@@ -152,6 +154,8 @@ const number=useSelector((state)=>state.numberIncAndDec)
           {/* Add more routes as needed */}
         </Routes>
       </Router>
+     </MyState>
+     
     </div>
   );
 }

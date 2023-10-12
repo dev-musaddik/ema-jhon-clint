@@ -1,6 +1,6 @@
 export const incrementFn=()=>{
     return{
-        type: 'INCREMENT',
+        type: 'INCREMENT',  
     }
 }
 export const decrementFn=()=>{

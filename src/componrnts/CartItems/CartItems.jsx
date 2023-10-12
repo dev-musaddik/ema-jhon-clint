@@ -10,6 +10,9 @@ const CartItems = ({
   setCartItems,
   checkOut,
   setCheckOut,
+  deleteLink,
+  setDeleteLink,
+
 }) => {
 const [test,setTest]=useState(false)
 
@@ -19,19 +22,18 @@ const [test,setTest]=useState(false)
     totalPrice: 0,
   });
   useEffect(() => {
-    const calculatedPrice = checkOut.reduce(
+     const calculatedPrice = checkOut.reduce(
       (accumulator, item) => {
         const subtotal = accumulator.subtotal + item.price * item.cartNumber;
         const delivery = accumulator.delivery + 5; // Assuming a fixed delivery fee of $5 per item
-        const totalPrice =subtotal+delivery;
-        console.log('im here', item);
+        const totalPrice =subtotal|0+delivery;
   
         return { subtotal, delivery, totalPrice };
       },
       { subtotal: 0, delivery: 0, totalPrice: 0 }
     );
     
-  
+    console.log(checkOut)
     console.log("SubTotal Price:", ProductsPrice.subtotal);
     console.log("Delivery:", ProductsPrice.delivery);
     console.log("Total Price:", ProductsPrice.totalPrice);
@@ -94,7 +96,8 @@ const [test,setTest]=useState(false)
                     checkOut={checkOut}
                     setCheckOut={setCheckOut}
                     cartItems={cartItems}
-                    deleteCartItems={deleteCartItems}
+                    deleteLink={deleteLink}
+                    setDeleteLink={setDeleteLink}
                   />
                 </div>
                 <div className="img-section">
@@ -118,6 +121,8 @@ const [test,setTest]=useState(false)
                       setTest={setTest}   
                       cartItems={cartItems}
                       setCartItems={setCartItems}
+                      checkOut={checkOut}
+                      setCheckOut={setCheckOut}
                     />
                   </div>
                 </div>
