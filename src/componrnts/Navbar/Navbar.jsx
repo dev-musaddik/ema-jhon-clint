@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import myContext from "../../ContexApi/myContex";
 const Navbar = ({ numberOfCartItems }) => {
   const { search, setSearch } = useContext(myContext);
-  console.log(search)
+  console.log(search);
 
   return (
     <div className="Navbar ">
@@ -32,7 +32,9 @@ const Navbar = ({ numberOfCartItems }) => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Link class="text-decoration-none text-white h-100" to='/' ><button className="btn-primary pl-2 pr-2 h-100">Search</button></Link>
+          <Link class="text-decoration-none text-white h-100" to="/">
+            <button className="btn-primary pl-2 pr-2 h-100" >Search</button>
+          </Link>
         </div>
 
         <div className="icon w-25 d-flex justify-content-end align-items-center">

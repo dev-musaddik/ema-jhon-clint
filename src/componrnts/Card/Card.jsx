@@ -13,7 +13,8 @@ const Card = ({ ProductData }) => {
   return (
     <>
       {sortedProducts
-        .filter((res) => res.name.toLowerCase().includes(search))
+        .filter((res) => res.name.toLowerCase().includes(search.toLowerCase()))
+
         .map((product) => (
           <div className="Card d-flex flex-column">
             <div className="img-section">
