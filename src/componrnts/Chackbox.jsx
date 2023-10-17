@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import myContext from "../ContexApi/myContex";
 
 const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
   const [isChecked, setIsChecked] = useState(false);
-
+  const {allChecked,setAllChecked}=useContext(myContext)
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked) 
    
+    setIsChecked(!isChecked) 
    
     
   };
@@ -13,13 +14,21 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
 
 
   useEffect(() => {
+  console.log('allChecked', allChecked)
+
+    if(allChecked){
+      setCheckOut(cartItems)
+      console.log('allChecked', checkOut)
+    }
     if (isChecked) {
       // Checkbox is checked, add the item to checkOut
 
+
       const checkedItem = cartItems.find((res) => res.key === itemkey);
       console.log('ckeck this one',cartItems)
-      if (checkedItem) {
+      if (checkedItem ) {
         setCheckOut([...checkOut, checkedItem]);
+
       }
       console.log("Checkbox clicked for item with key:", itemkey);
     }  else {
@@ -28,7 +37,7 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
       setCheckOut(updatedCheckOut);
       console.log("Checkbox Unclicked for item with key:", itemkey);
     }
-  }, [cartItems, isChecked]);
+  }, [cartItems, isChecked,allChecked]);
  
 
  
@@ -37,7 +46,7 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
     <div>
       <input
         type="checkbox"
-        checked={isChecked}
+        checked={isChecked?isChecked:allChecked}
         onChange={handleCheckboxChange}
       />
     </div>

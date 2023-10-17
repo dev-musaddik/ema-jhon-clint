@@ -1,36 +1,29 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import "./App.css";
 import Navbar from "./componrnts/Navbar/Navbar";
 import Shop from "./componrnts/Shop/Shop";
 import Data from "./componrnts/fakeData";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import ProductDetails from "./componrnts/ProductDetails/ProductDetails";
 import CartItems from "./componrnts/CartItems/CartItems";
 import { useDispatch, useSelector } from "react-redux";
 import { decrementFn, incrementFn } from "./Action";
 import MyState from "./ContexApi/myState";
-// import { initializeApp } from "firebase/app";
-// import { getAuth, getRedirectResult, GoogleAuthProvider } from "firebase/auth";
-// // TODO: Replace the following with your app's Firebase project configuration
-// const firebaseConfig = {
-//   //...
-// };
-// import firebaseConfig from "./firebase.config";
-// import * as firebase from "firebase"; // Import the Firebase library itself
-// import * as auth from "firebase";
-// firebase.initializeApp(firebaseConfig);
+import Signup from "./componrnts/SingnUp/SingnUp";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Login from "./componrnts/Login/Login";
+import Admin from "./componrnts/Admin/Admin";
+
 
 function App() {
-  useEffect(()=>{
-    fetch('https://fakestoreapi.com/products')
-    .then(response => response.json())
-    .then(response => console.log(response))
-  },[])
 
 
-  
-  // const provider = new GoogleAuthProvider();
- 
   const getData = () => {
     const storeData = localStorage.getItem("myData");
     if (storeData) {
@@ -40,7 +33,7 @@ function App() {
     }
   };
   const [ProductData, setProductData] = useState(Data);
-  const [deleteLink, setDeleteLink]=useState(false);
+  const [deleteLink, setDeleteLink] = useState(false);
   const [cartItems, setCartItems] = useState(getData);
   const [itemsStyle, setItemsStyle] = useState(false);
   const [checkOut, setCheckOut] = useState([]);
@@ -55,15 +48,13 @@ function App() {
   }, [cartItems]);
   // ---------------------delete cart items----------
   const deleteCartItems = (key) => {
-    setDeleteLink(true)
+    setDeleteLink(true);
     // Use the filter method to create a new array without the item to delete
     const updatedCartItems = cartItems.filter(
       (cartItem) => cartItem.key !== key
     );
-    const updatedCheckOut = checkOut.filter(
-      (checkOut) => checkOut.key !==key
-    )
-    setCheckOut(updatedCheckOut)
+    const updatedCheckOut = checkOut.filter((checkOut) => checkOut.key !== key);
+    setCheckOut(updatedCheckOut);
 
     // Update the state with the new array
     setCartItems(updatedCartItems);
@@ -95,8 +86,8 @@ function App() {
     //     console.error("Error signing in:", error);
     //   });
   };
-const dispatch =useDispatch()
-const number=useSelector((state)=>state.numberIncAndDec)
+  const dispatch = useDispatch();
+  const number = useSelector((state) => state.numberIncAndDec);
   return (
     <div className="App">
       {/* <button className="btn-primary" onClick={() => Auth()}>
@@ -106,58 +97,86 @@ const number=useSelector((state)=>state.numberIncAndDec)
       <button onClick={()=>dispatch(decrementFn())}>-</button>
       <button onClick={()=>dispatch(incrementFn())}>+</button> */}
 
-
-     <MyState>
-
-     <Router>
-        <Routes>
-          {/* Define your routes here */}
-          <Route
-            path="/"
-            element={
-              <>
-                {/* Pass the correct prop name */}
-                <Navbar numberOfCartItems={cartItems.length} />
-                <Shop
-                  ProductData={ProductData}
-                  changeItemsStyle={changeItemsStyle}
-                  itemsStyle={itemsStyle}
+      <MyState>
+        <Router>
+          <Routes>
+            {/* Define your routes here */}
+            <Route
+              path="/"
+              element={
+                <>
+                  {/* Pass the correct prop name */}
+                  <Navbar numberOfCartItems={cartItems.length} />
+                  <Shop
+                    ProductData={ProductData}
+                    changeItemsStyle={changeItemsStyle}
+                    itemsStyle={itemsStyle}
+                  />
+                </>
+              }
+            />
+            <Route
+              path="/cartOverView"
+              element={
+                <CartItems
+                  deleteCartItems={deleteCartItems}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                  checkOut={checkOut}
+                  setCheckOut={setCheckOut}
+                  deleteLink={deleteLink}
+                  setDeleteLink={setDeleteLink}
                 />
-              </>
-            }
-          />
-          <Route
-            path="/cartOverView"
-            element={
-              <CartItems
-                deleteCartItems={deleteCartItems}
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-                checkOut={checkOut}
-                setCheckOut={setCheckOut}
-                deleteLink={deleteLink}
-                setDeleteLink={setDeleteLink}
-              />
-            }
-          />
-          <Route
-            path="/ProductDetails/:key"
-            element={
-              <ProductDetails
-                ProductData={ProductData}
-                setProductData={setProductData}
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-              />
-            }
-          />
-          {/* Add more routes as needed */}
-        </Routes>
-      </Router>
-     </MyState>
-     
+              }
+            />
+            <Route
+              path="/ProductDetails/:key"
+              element={
+                <ProductDetails
+                  ProductData={ProductData}
+                  setProductData={setProductData}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                />
+              }
+            />
+            <Route path="signup" element={<Signup />} />
+            <Route path="login" element={<Login />} />
+            
+            <Route path="admin" element={
+              <ProtectedRouterForAdmin>
+                <Admin />
+              </ProtectedRouterForAdmin>
+            } />
+            {/* Add more routes as needed */}
+          </Routes>
+          <ToastContainer />
+        </Router>
+      </MyState>
     </div>
   );
 }
 
 export default App;
+
+//user
+
+export const ProtectedRouter = ({ children }) => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    return children;
+  } else {
+    return <Navigate to="/login" />;
+  }
+};
+
+//admin
+
+export const ProtectedRouterForAdmin = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user?.user?.email || user?.email === "musaddikh13@gmail.com") {
+    return children;
+  } else {
+    return <Navigate to="/login" />;
+  }
+};

@@ -5,7 +5,11 @@ function MyState(props) {
   const [sortedProducts, setSortedProducts] = useState([...ProductData]);
   const [sortedByPrice, setSortedByPrice] = useState([...ProductData]);
   const [topPrice, setTopPrice] = useState(false);
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
+  const [allChecked, setAllChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  var [userData, setUserData] = useState([]);
+
 
   const state = {
     name: "Kamal Nayan",
@@ -25,8 +29,14 @@ function MyState(props) {
         setTopPrice,
         sortedByPrice,
         setSortedByPrice,
-        search, 
-        setSearch
+        search,
+        setSearch,
+        allChecked,
+        setAllChecked,
+        loading,
+        setLoading,
+        userData, 
+        setUserData
       }}
     >
       {props.children}

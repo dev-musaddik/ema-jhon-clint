@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./CartItems.css";
 import Navbar from "../Navbar/Navbar";
 import Counter from "../Counter/Counter";
 import Chackbox from "../Chackbox";
+import myContext from "../../ContexApi/myContex";
+import { Link } from "react-router-dom";
 
 const CartItems = ({
   cartItems,
@@ -14,8 +16,9 @@ const CartItems = ({
   setDeleteLink,
 
 }) => {
+  const loginUser=JSON.parse(localStorage?.getItem('user'));
 const [test,setTest]=useState(false)
-
+const {allChecked,setAllChecked}=useContext(myContext)
   const [ProductsPrice, setProductsPrice] = useState({
     subtotal: 0,
     delivery: 0,
@@ -41,6 +44,13 @@ const [test,setTest]=useState(false)
     // You can now use ProductsPrice.subtotal, ProductsPrice.delivery, and ProductsPrice.totalPrice as needed.
   }, [checkOut,cartItems]);
   const slectAll=()=>{
+ setAllChecked(!allChecked)
+ if(!allChecked){
+  setCheckOut(cartItems)
+ }
+ else{
+  setCheckOut([])
+ }
 
   }
   
@@ -50,7 +60,12 @@ const [test,setTest]=useState(false)
       <div>
         <Navbar numberOfCartItems={cartItems.length} />
 
-        <p>Your cart is empty.</p>
+        {
+          loginUser?
+          <p>Hay! {loginUser?.displayName}.Your cart is empty.Let's add products <Link className="text-decoration-underline text-primary" to='/'>go</Link></p>
+          :
+          <p>Your cart is empty.Let's add products <Link className="text-decoration-underline text-primary" to='/'>go</Link></p>
+        }
       </div>
     );
   }
@@ -62,7 +77,7 @@ const [test,setTest]=useState(false)
     <div className="CartItems">
       <Navbar numberOfCartItems={cartItems.length} />
       <h5 className="pl-4">My Sopping Cart</h5>
-      <input className="ml-4" type="checkbox" name="Item" id="allItems" onClick={()=>slectAll()} />
+      <input className="ml-4" checked={allChecked} type="checkbox" name="Item" id="allItems" onChange={()=>slectAll()} />
       <label className="ml-2" htmlFor="allItems">
         Select all items
       </label>

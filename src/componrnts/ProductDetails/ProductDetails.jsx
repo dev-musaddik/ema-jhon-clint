@@ -8,6 +8,8 @@ import { FaStar } from "react-icons/fa";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { numberIncAndDec } from "../../Reducer/incAndDec";
+import { Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 const ProductDetails = ({
   ProductData,
   setProductData,
@@ -22,23 +24,57 @@ const ProductDetails = ({
   console.log(newItem.key, "===", singleProduct.key);
 
   const handleButtonClick = () => {
-    setShowMessage(true);
-    // Optionally, hide the message after a certain duration
-    setTimeout(() => {
-      setShowMessage(false);
-    }, 3000); // Hide the message after 3 seconds (adjust as needed)
-    const itemExists = cartItems.some((item) => item.key === newItem.key);
-
-    if (!itemExists) {
-      // If the item with the same key doesn't exist, add it to cartItems
-      setCartItems([...cartItems, newItem]);
+    const confirmLogout = () => {
+      // Redirect to the login page
+      window.location.href = "/login";
+      // Close the confirmation toast
+      toast.dismiss();
+    };
+  
+    const cancelLogout = () => {
+      // Close the confirmation toast
+      toast.dismiss();
     }
+    const logUsr=JSON.parse(localStorage.getItem('user'))
+    if (logUsr){
+      setShowMessage(true);
+      // Optionally, hide the message after a certain duration
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 3000); // Hide the message after 3 seconds (adjust as needed)
+      const itemExists = cartItems.some((item) => item.key === newItem.key);
+  
+      if (!itemExists) {
+        // If the item with the same key doesn't exist, add it to cartItems
+        setCartItems([...cartItems, newItem]);
+      }
+  
+      console.log("add item");
+      console.log(cartItems);
+      //   console.log(ProductData);
+    }else{
+      toast(
+        <div className="bg-dark p-3">
+          <span className="text-warning">"If you want to add products, you'll need to log in first. Are you prepared for that?"</span>
+          <br />
+          <Button onClick={confirmLogout} variant="success">
+            Yes
+          </Button>{" "}
+          <Button onClick={cancelLogout} variant="danger">
+            No
+          </Button>{" "}
+        </div>
+      );
+    };
+  
+   
+    
+   
+  
 
-    console.log("add item");
-    console.log(cartItems);
-    //   console.log(ProductData);
-  };
-
+    }
+    
+  
   console.log(cartItems);
   const number=useSelector(state=>state.numberIncAndDec)
 

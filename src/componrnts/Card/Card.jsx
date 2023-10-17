@@ -9,14 +9,17 @@ const Card = ({ ProductData }) => {
   const { topSell, setTopSell, sortedProducts, topPrice, setTopPrice, search } =
     context;
   console.log(context);
-  const test = ProductData.filter((product) => product.starCount > 0);
+
+  const switchFn=(e)=>{
+   window.location.href=`/ProductDetails/${e}`
+  }
   return (
     <>
       {sortedProducts
         .filter((res) => res.name.toLowerCase().includes(search.toLowerCase()))
 
         .map((product) => (
-          <div className="Card d-flex flex-column">
+          <div className="Card d-flex flex-column" onClick={()=>switchFn(product.key)}>
             <div className="img-section">
               <img src={product.img} alt="product " />
             </div>
