@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import "./ProductDetails.css";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -10,20 +10,34 @@ import { useSelector } from "react-redux";
 import { numberIncAndDec } from "../../Reducer/incAndDec";
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
+import myContext from "../../ContexApi/myContex";
 const ProductDetails = ({
-  ProductData,
-  setProductData,
+  
   cartItems,
   setCartItems,
+  exist
 }) => {
   const { key } = useParams();
-  const singleProduct = ProductData.find((product) => product.key === key);
+
+ 
+  console.log(key)
+  const [singleProduct,setSingleProduct]=useState({})
+
+  useEffect(()=>{
+    fetch('https://ema-jhon.onrender.com/getproduct/'+key)
+    .then((response) =>response.json())
+    .then(data=>{
+      setSingleProduct(data)})
+      .catch((err)=>{console.log(err)})
+  },[key])
+  
+  const {ProductData}=useContext(myContext)
+  // const data = singleProduct?.find((product) => product.key === key);
   const [showMessage, setShowMessage] = useState(false);
   const newItem = singleProduct;
 
-  console.log(newItem.key, "===", singleProduct.key);
-
-  const handleButtonClick = () => {
+  console.log(newItem?.key, "===", singleProduct?.key);
+   const buyNowFn=()=>{
     const confirmLogout = () => {
       // Redirect to the login page
       window.location.href = "/login";
@@ -37,6 +51,37 @@ const ProductDetails = ({
     }
     const logUsr=JSON.parse(localStorage.getItem('user'))
     if (logUsr){
+    }else{
+      toast(
+        <div className="bg-dark p-3">
+          <span className="text-warning">"If you want to add products, you'll need to log in first. Are you prepared for that?"</span>
+          <br />
+          <Button onClick={confirmLogout} variant="success">
+            Yes
+          </Button>{" "}
+          <Button onClick={cancelLogout} variant="danger">
+            No
+          </Button>{" "}
+        </div>
+      );
+    };
+   }
+  const handleButtonClick = () => {
+    const confirmLogout = () => {
+      // Redirect to the login page
+      window.location.href = "/login";
+      // Close the confirmation toast
+      toast.dismiss();
+    };
+  
+    const cancelLogout = () => {
+      // Close the confirmation toast
+      toast.dismiss();
+    }
+
+      
+    const logUsr=JSON.parse(localStorage.getItem('user'))
+    if (logUsr ){
       setShowMessage(true);
       // Optionally, hide the message after a certain duration
       setTimeout(() => {
@@ -52,7 +97,10 @@ const ProductDetails = ({
       console.log("add item");
       console.log(cartItems);
       //   console.log(ProductData);
-    }else{
+    }
+    
+    
+    else{
       toast(
         <div className="bg-dark p-3">
           <span className="text-warning">"If you want to add products, you'll need to log in first. Are you prepared for that?"</span>
@@ -85,7 +133,7 @@ const ProductDetails = ({
         <h1>{number}</h1>
       <div className="product-overView">
         <div className="img-section">
-          <img src={singleProduct.img} alt="singleImg" />
+          <img src={singleProduct?.img} alt="singleImg" />
           <span>{singleProduct.category}</span>
         </div>
         <div className="details-section ">
@@ -134,13 +182,14 @@ const ProductDetails = ({
             <BsFillChatLeftTextFill size={30} />
           </div>
           <div className="button">
-            <button>Buy Now</button>
+            <button onClick={()=>buyNowFn()}>Buy Now</button>
             <button onClick={() => handleButtonClick()}>Add To Cart</button>
           </div>
         </div>
-        {showMessage && (
+       { showMessage &&(
           <div className="alert-message d-flex ">Item added successfully <Link to="/cartOverView">go cart</Link></div>
-        )}
+       ) 
+       }
       </div>
     </div>
   );

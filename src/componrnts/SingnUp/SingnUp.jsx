@@ -42,6 +42,7 @@ function Signup() {
             setLoading(false)
             
         } catch (error) {
+            toast.error(error.message)
             console.log(error)
             setLoading(false)
         }

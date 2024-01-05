@@ -24,23 +24,33 @@ const {allChecked,setAllChecked}=useContext(myContext)
     delivery: 0,
     totalPrice: 0,
   });
-  useEffect(() => {
-     const calculatedPrice = checkOut.reduce(
-      (accumulator, item) => {
-        const subtotal = accumulator.subtotal + item.price * item.cartNumber;
-        const delivery = accumulator.delivery + 5; // Assuming a fixed delivery fee of $5 per item
-        const totalPrice =subtotal|0+delivery;
   
-        return { subtotal, delivery, totalPrice };
-      },
-      { subtotal: 0, delivery: 0, totalPrice: 0 }
-    );
+  const handleCheckOut=() => {
+    console.log('handleCheckOut')
+  }
+  useEffect(() => {
+
+    if(checkOut){
+      const calculatedPrice = checkOut.reduce(
+        (accumulator, item) => {
+          console.log('calculatedPrice ',item.cartNumber)
+          const subtotal = accumulator.subtotal + item.price * item.cartNumber || item.price;
+          const delivery = accumulator.delivery + 5; // Assuming a fixed delivery fee of $5 per item
+          const totalPrice =subtotal|0+delivery;
     
-    console.log(checkOut)
-    console.log("SubTotal Price:", ProductsPrice.subtotal);
-    console.log("Delivery:", ProductsPrice.delivery);
-    console.log("Total Price:", ProductsPrice.totalPrice);
-    setProductsPrice(calculatedPrice);
+          return { subtotal, delivery, totalPrice };
+        },
+        { subtotal: 0, delivery: 0, totalPrice: 0 }
+      );
+      
+      console.log(checkOut)
+      console.log("SubTotal Price:", ProductsPrice.subtotal);
+      console.log("Delivery:", ProductsPrice.delivery);
+      console.log("Total Price:", ProductsPrice.totalPrice);
+      setProductsPrice(calculatedPrice);
+      console.log('this is checked out',checkOut);
+      console.log('this is checked product price',ProductsPrice)
+    }
     // You can now use ProductsPrice.subtotal, ProductsPrice.delivery, and ProductsPrice.totalPrice as needed.
   }, [checkOut,cartItems]);
   const slectAll=()=>{
@@ -89,7 +99,7 @@ const {allChecked,setAllChecked}=useContext(myContext)
         <span>Total: ${ProductsPrice.totalPrice.toFixed(2)}</span>
         </div>
         <div className="checkout ">
-          <button>Check Out (0)</button>
+      <button><Link to='/shipment' onClick={handleCheckOut}>Check Out ({checkOut?.length})</Link></button>
         </div>
       </div>
       <div className="">

@@ -34,6 +34,7 @@ const IncreaseAndDecrease = (type) => {
   
       setNumberOfSingleItem(numberOfsingleItem + 1);
       setCheckOut(updatedCart);
+      console.log('this ')
     } else if (type === "decrease" && numberOfsingleItem > 1) {
       const updatedCart = checkOut.map((item) => {
         if (item.key === itemkey) {

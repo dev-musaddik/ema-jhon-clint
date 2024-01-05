@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import Navbar from "./componrnts/Navbar/Navbar";
 import Shop from "./componrnts/Shop/Shop";
@@ -19,10 +19,18 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./componrnts/Login/Login";
 import Admin from "./componrnts/Admin/Admin";
-
+import myContext from "./ContexApi/myContex";
+import Shipment from "./componrnts/Shipment/Shipment";
 
 function App() {
+  const data = [];
 
+  const [deleteLink, setDeleteLink] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [itemsStyle, setItemsStyle] = useState(false);
+  const [checkOut, setCheckOut] = useState(
+    JSON.parse(localStorage?.getItem("checkOutItems"))
+  );
 
   const getData = () => {
     const storeData = localStorage.getItem("myData");
@@ -32,22 +40,57 @@ function App() {
       return [];
     }
   };
-  const [ProductData, setProductData] = useState(Data);
-  const [deleteLink, setDeleteLink] = useState(false);
-  const [cartItems, setCartItems] = useState(getData);
-  const [itemsStyle, setItemsStyle] = useState(false);
-  const [checkOut, setCheckOut] = useState([]);
+
+  const [test, setTest] = useState(getData());
+
+  useEffect(() => {
+    fetch("https://ema-jhon.onrender.com/getproductByKeys", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(getData()),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const addCount = data.map((item) => ({ ...item, cartNumber: 1 }));
+        setCartItems(addCount);
+        console.log("okey", addCount);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  // -----------------------set data
+  useEffect(() => {
+    // localStorage.setItem("myData", JSON.stringify(cartItems));
+
+    // console.log("this is a get data key from local stores",cartItems[0].key , cartItems[1].key);
+    const newData = cartItems.map((res) => res.key);
+    const localData = getData();
+    const existKey = localData.some((res) => res === newData);
+    if (!existKey) {
+      const uniqueKeysSet = new Set([...getData(), ...newData]);
+
+      // Convert the Set back to an array
+      const updatedData = [...uniqueKeysSet];
+
+      localStorage.setItem("myData", JSON.stringify(updatedData));
+    } else {
+      console.log("this key is already exist");
+    }
+
+    console.log(data);
+  }, [cartItems]);
+  console.log();
   const changeItemsStyle = (styleType) => {
     if (styleType === "grid") {
       setItemsStyle(false);
     } else setItemsStyle(true);
   };
-
-  useEffect(() => {
-    localStorage.setItem("myData", JSON.stringify(cartItems));
-  }, [cartItems]);
   // ---------------------delete cart items----------
   const deleteCartItems = (key) => {
+    const localData = getData();
+    const newData = localData.filter((data) => data !== key);
+    localStorage.setItem("myData", JSON.stringify(newData));
     setDeleteLink(true);
     // Use the filter method to create a new array without the item to delete
     const updatedCartItems = cartItems.filter(
@@ -108,7 +151,6 @@ function App() {
                   {/* Pass the correct prop name */}
                   <Navbar numberOfCartItems={cartItems.length} />
                   <Shop
-                    ProductData={ProductData}
                     changeItemsStyle={changeItemsStyle}
                     itemsStyle={itemsStyle}
                   />
@@ -133,8 +175,6 @@ function App() {
               path="/ProductDetails/:key"
               element={
                 <ProductDetails
-                  ProductData={ProductData}
-                  setProductData={setProductData}
                   cartItems={cartItems}
                   setCartItems={setCartItems}
                 />
@@ -142,12 +182,26 @@ function App() {
             />
             <Route path="signup" element={<Signup />} />
             <Route path="login" element={<Login />} />
-            
-            <Route path="admin" element={
-              <ProtectedRouterForAdmin>
-                <Admin />
-              </ProtectedRouterForAdmin>
-            } />
+
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRouterForAdmin>
+                  <Admin />
+                </ProtectedRouterForAdmin>
+              }
+            />
+            <Route
+              path="/shipment"
+              element={
+                <ProtectedRouterForShipment>
+                  <Navbar numberOfCartItems={cartItems.length}/>
+
+                  
+                  <Shipment  />
+                </ProtectedRouterForShipment>
+              }
+            />
             {/* Add more routes as needed */}
           </Routes>
           <ToastContainer />
@@ -175,6 +229,14 @@ export const ProtectedRouter = ({ children }) => {
 export const ProtectedRouterForAdmin = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user?.user?.email || user?.email === "musaddikh13@gmail.com") {
+    return children;
+  } else {
+    return <Navigate to="/login" />;
+  }
+};
+export const ProtectedRouterForShipment = ({ children }) => {
+  const user = localStorage.getItem("user");
+  if (user) {
     return children;
   } else {
     return <Navigate to="/login" />;

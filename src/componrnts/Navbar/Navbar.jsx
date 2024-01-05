@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Navbar.css";
 import logo from "./logo.png";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -8,11 +8,12 @@ import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
 const Navbar = ({ numberOfCartItems }) => {
   const { search, setSearch, userData, setUserData } = useContext(myContext);
-  const loginUser=JSON.parse(localStorage?.getItem('user'));
-  const defultUsr ='https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg'
-  console.log(loginUser);
-  console.log(search);
+  const loginUser = JSON.parse(localStorage?.getItem("user"));
+  const defultUsr =
+    "https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg";
+    console.log(loginUser);
   const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user?.email);
   if (user && user.user && user.user.email) {
     console.log(user);
     console.log(user.user);
@@ -72,13 +73,11 @@ const Navbar = ({ numberOfCartItems }) => {
             ) : (
               ""
             )}
-            {user?.user?.email || user?.email === "musaddikh13@gmail.com" ? (
+            {(user?.email==="musaddikh13@gmail.com") ? (
               <li>
                 <Link to="admin">Admin</Link>
               </li>
-            ) : (
-              ""
-            )}
+            ) : null}
           </ul>
         </div>
         <div className="login d-flex justify-content-center">
@@ -89,9 +88,9 @@ const Navbar = ({ numberOfCartItems }) => {
                  bg-primary text-white d-flex 
                  justify-content-center
                   align-items-center"
-                src={loginUser?.photoURL?loginUser?.photoURL:defultUsr}
+                src={loginUser?.photoURL ? loginUser?.photoURL : defultUsr}
                 alt="test"
-                style={{ width: '50px', height: '50px' }}
+                style={{ width: "50px", height: "50px" }}
               />
             </span>
           ) : (
@@ -103,7 +102,7 @@ const Navbar = ({ numberOfCartItems }) => {
         <div className="input w-75 d-flex justify-content-end">
           <input
             type="text"
-            className="w-75 text-dark pl-2"
+            className="w-75 text-dark pl-2" 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
