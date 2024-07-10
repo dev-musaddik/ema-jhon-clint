@@ -21,6 +21,7 @@ import Login from "./componrnts/Login/Login";
 import Admin from "./componrnts/Admin/Admin";
 import myContext from "./ContexApi/myContex";
 import Shipment from "./componrnts/Shipment/Shipment";
+import Order from "./componrnts/Order/Order";
 
 function App() {
   const data = [];
@@ -187,6 +188,8 @@ function App() {
               path="/admin"
               element={
                 <ProtectedRouterForAdmin>
+                 <Navbar numberOfCartItems={cartItems.length}/>
+
                   <Admin />
                 </ProtectedRouterForAdmin>
               }
@@ -202,7 +205,17 @@ function App() {
                 </ProtectedRouterForShipment>
               }
             />
-            {/* Add more routes as needed */}
+              <Route
+              path="/oder"
+              element={
+                <ProtectedRouter>
+                  <Navbar numberOfCartItems={cartItems.length}/>
+
+                  
+                  <Order/>
+                </ProtectedRouter>
+              }
+            />
           </Routes>
           <ToastContainer />
         </Router>

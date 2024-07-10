@@ -16,7 +16,7 @@ const Card = ({ ProductData }) => {
   return (
     <>
       {sortedProducts
-        .filter((res) => res.name.toLowerCase().includes(search.toLowerCase()))
+        .filter((res) => res.name?.toLowerCase().includes(search.toLowerCase()))
 
         .map((product) => (
           <div className="Card d-flex flex-column" onClick={()=>switchFn(product.key)}>

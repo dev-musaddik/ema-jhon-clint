@@ -41,7 +41,7 @@ const Navbar = ({ numberOfCartItems }) => {
     // Clear the user data from localStorage
     localStorage.clear("user");
     // Reload the page
-    window.location.reload();
+    // window.location.reload();
     // Redirect to the login page
     window.location.href = "/login";
     // Close the confirmation toast
@@ -68,14 +68,14 @@ const Navbar = ({ numberOfCartItems }) => {
             </li>
             {user ? (
               <li>
-                <Link to="oder">Order</Link>
+                <Link to="/oder">Order</Link>
               </li>
             ) : (
               ""
             )}
             {(user?.email==="musaddikh13@gmail.com") ? (
               <li>
-                <Link to="admin">Admin</Link>
+                <Link to="/admin">Admin</Link>
               </li>
             ) : null}
           </ul>

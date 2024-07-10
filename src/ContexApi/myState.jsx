@@ -17,12 +17,14 @@ function MyState(props) {
   useEffect(() => {
     const serverData = async () => {
       try {
+        setLoading(true);
         const response = await fetch('https://ema-jhon.onrender.com/getproduct');
         const data = await response.json();
         setDataFromSarver(data);
         setProductData(data)
         setSortedProducts([...data]);
         setSortedByPrice([...data]);
+        setLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error);
       }

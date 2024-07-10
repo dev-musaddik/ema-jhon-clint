@@ -24,7 +24,7 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
 
   useEffect(() => {
     cartItems.map((cartItems) => {
-      if (cartItems.key == itemkey) {
+      if (cartItems.key === itemkey) {
         console.log("this is check musaddik");
         checkOut?.forEach(element => {
           if(element.checkBox){
@@ -37,9 +37,23 @@ const Checkbox = ({ itemkey, checkOut, setCheckOut, cartItems }) => {
       }
     });
   }, []);
+  // const handleCheckboxChange = () => {
+  //   setIsChecked(!isChecked);
+  // };
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
+    if (!isChecked) {
+      setCheckOut((prevCheckOut) => [
+        ...prevCheckOut,
+        cartItems.find((res) => res.key === itemkey)
+      ]);
+    } else {
+      setCheckOut((prevCheckOut) =>
+        prevCheckOut.filter((item) => item.key !== itemkey)
+      );
+    }
   };
+  
 
   useEffect(() => {
     if (allChecked) {

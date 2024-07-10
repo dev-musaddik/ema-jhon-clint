@@ -5,6 +5,7 @@ import { useContext } from "react";
 import myContext from "../../ContexApi/myContex";
 import Navbar from "../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
+import ProcessPayment from "../ProcessPayment/ProcessPayment";
 
 const Shipment =  () => {
   const { register, handleSubmit, errors, setValue, getValues } = useForm();
@@ -43,7 +44,7 @@ const Shipment =  () => {
             if (data) {
               alert("Order successfully shipped");
               console.log(data);
-              navigate('/');
+              navigate('/oder');
             }
           })
           .catch((err) => {
@@ -61,7 +62,9 @@ const Shipment =  () => {
 
   return (
     <>
-      <form className="ship-form" onSubmit={handleSubmit(onSubmit)}>
+      <div className="row">
+        <div className="col-md-6">
+        <form className="ship-form" onSubmit={handleSubmit(onSubmit)}>
         {/* Your input fields and error handling here */}
         <input
           name="name"
@@ -95,6 +98,11 @@ const Shipment =  () => {
 
         <input type="submit" />
       </form>
+        </div>
+        <div className="col-md-6">
+          <ProcessPayment></ProcessPayment>
+        </div>
+      </div>
     </>
   );
 };

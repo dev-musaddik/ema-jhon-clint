@@ -7,6 +7,7 @@ import myContext from "../../ContexApi/myContex";
 
 import { BiDownArrowAlt, BiUpArrowAlt } from "react-icons/bi";
 import { LuArrowUpDown } from "react-icons/lu";
+import Loader from "../Loder/Loder";
 const Shop = ({  changeItemsStyle, itemsStyle }) => {
   const [test, setTest] = useState(false);
   const {
@@ -19,7 +20,8 @@ const Shop = ({  changeItemsStyle, itemsStyle }) => {
     sortedProducts,
     setSortedProducts,
     dataFromSarver,
-    ProductData
+    ProductData,
+    loading,
   } = useContext(myContext);
   console.log('this is come from server', dataFromSarver)
   const priceUpDown = () => {
@@ -60,6 +62,9 @@ const Shop = ({  changeItemsStyle, itemsStyle }) => {
 
   return (
     <div className="Shop d-flex flex-column">
+      {loading &&(
+        <Loader></Loader>
+      )}
       <div className="filter">
         <div className="best-match">
           <p>Best Macth</p>
