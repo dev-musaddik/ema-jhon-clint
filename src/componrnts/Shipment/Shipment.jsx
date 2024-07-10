@@ -100,7 +100,7 @@ const Shipment =  () => {
       </form>
         </div>
         <div className="col-md-6">
-          <ProcessPayment></ProcessPayment>
+          {/* <ProcessPayment></ProcessPayment> */}
         </div>
       </div>
     </>
